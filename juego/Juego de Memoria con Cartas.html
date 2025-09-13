@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Memoria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Variables y estilos generales */
+        :root {
+            --primary-color: #3b82f6; /* Azul vibrante */
+            --secondary-color: #60a5fa; /* Azul claro */
+            --bg-color: #0b1014; /* Fondo gris suave */
+            --text-color: #1e293b; /* Texto oscuro */
+            --card-back-color: #eae390; /* Morado intenso */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+        }
+
+        .game-container {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.8s ease-out;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stats {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .btn-restart {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-restart:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            perspective: 1000px; /* Perspectiva para el efecto 3D flip */
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* Mantiene una relación de aspecto 1:1 */
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            user-select: none; /* Evita que se seleccione el texto en las cartas */
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            border-radius: 12px;
+            /* La visibilidad de la cara trasera se gestiona en las caras individuales */
+        }
+
+        .card-front {
+            background-color: white;
+            transform: rotateY(180deg);
+            backface-visibility: hidden; /* Oculta el frente de la carta hasta que se voltea */
+        }
+
+        .card-back {
+            background-color: var(--card-back-color);
+            color: white;
+            transform: rotateY(0deg);
+            backface-visibility: hidden; /* Oculta la parte trasera de la carta volteada */
+            font-size: 1.5rem;
+        }
+
+        .card.match {
+            animation: pulse-match 0.8s ease-out;
+            pointer-events: none;
+        }
+
+        /* Animaciones */
+        @keyframes pulse-match {
+            0% { transform: scale(1.05); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .game-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transform: scale(0.8);
+            animation: modal-pop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1.2);
+        }
+        
+        @keyframes modal-pop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Estilos responsivos */
+        @media (max-width: 600px) {
+            .game-board {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.75rem;
+            }
+            .card {
+                padding-top: 100%;
+            }
+            .card-face {
+                font-size: 2rem;
+            }
+            .stats {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Juego de Memoria</h1>
+        <div class="controls">
+            <div class="stats">
+                <div>Tiempo: <span id="timer">0</span>s</div>
+                <div>Intentos: <span id="tries">0</span></div>
+            </div>
+            <button id="restartBtn" class="btn-restart">Reiniciar</button>
+        </div>
+        <div class="game-board" id="gameBoard"></div>
+    </div>
+
+    <!-- Modal de fin de juego (victoria o derrota) -->
+    <div id="endGameModal" class="game-modal">
+        <div class="modal-content">
+            <h2 id="modalTitle" class="text-3xl font-bold text-primary-color mb-4"></h2>
+            <p id="modalMessage" class="text-lg text-text-color mb-4"></p>
+            <button id="playAgainBtn" class="btn-restart">Jugar de Nuevo</button>
+        </div>
+    </div>
+
+    <script>
+        const gameBoard = document.getElementById('gameBoard');
+        const restartBtn = document.getElementById('restartBtn');
+        const timerDisplay = document.getElementById('timer');
+        const triesDisplay = document.getElementById('tries');
+        const endGameModal = document.getElementById('endGameModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const playAgainBtn = document.getElementById('playAgainBtn');
+
+        // Los 6 pares de cartas (12 cartas en total)
+        const cardEmojis = ['👻', '👽', '💀', '🤖', '🎃', '🥷🏽'];
+        let cards = [...cardEmojis, ...cardEmojis];
+
+        // Variables de estado del juego
+        let hasFlippedCard = false;
+        let lockBoard = false;
+        let firstCard, secondCard;
+        let tries = 0;
+        let matchedPairs = 0;
+        let timer = 0;
+        let timerInterval;
+        const TIME_LIMIT = 40; // 40 segundos de límite de tiempo
+
+        // Función para mezclar las cartas de forma aleatoria
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Función para crear el tablero de juego
+        function createBoard() {
+            gameBoard.innerHTML = '';
+            shuffle(cards);
+            cards.forEach(cardValue => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.dataset.value = cardValue;
+
+                const cardFront = document.createElement('div');
+                cardFront.classList.add('card-face', 'card-front');
+                cardFront.textContent = cardValue;
+
+                const cardBack = document.createElement('div');
+                cardBack.classList.add('card-face', 'card-back');
+                cardBack.textContent = '?';
+
+                card.appendChild(cardFront);
+                card.appendChild(cardBack);
+                card.addEventListener('click', flipCard);
+                gameBoard.appendChild(card);
+            });
+        }
+
+        // Función para voltear la carta al hacer clic
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === firstCard) return;
+
+            this.classList.add('is-flipped');
+
+            if (!hasFlippedCard) {
+                // Primer clic
+                hasFlippedCard = true;
+                firstCard = this;
+                startTimer();
+                return;
+            }
+
+            // Segundo clic
+            secondCard = this;
+            tries++;
+            triesDisplay.textContent = tries;
+            checkForMatch();
+        }
+
+        // Función para verificar si las cartas son un par
+        function checkForMatch() {
+            let isMatch = firstCard.dataset.value === secondCard.dataset.value;
+            isMatch ? disableCards() : unflipCards();
+        }
+
+        // Función para deshabilitar las cartas si son un par
+        function disableCards() {
+            firstCard.removeEventListener('click', flipCard);
+            secondCard.removeEventListener('click', flipCard);
+            
+            firstCard.classList.add('match');
+            secondCard.classList.add('match');
+
+            matchedPairs++;
+            checkWin();
+            resetBoard();
+        }
+
+        // Función para voltear las cartas si no son un par
+        function unflipCards() {
+            lockBoard = true;
+            setTimeout(() => {
+                firstCard.classList.remove('is-flipped');
+                secondCard.classList.remove('is-flipped');
+                resetBoard();
+            }, 1000);
+        }
+
+        // Función para reiniciar las variables de estado del tablero
+        function resetBoard() {
+            [hasFlippedCard, lockBoard] = [false, false];
+            [firstCard, secondCard] = [null, null];
+        }
+
+        // Función para iniciar el temporizador
+        function startTimer() {
+            if (!timerInterval) {
+                timerInterval = setInterval(() => {
+                    timer++;
+                    timerDisplay.textContent = timer;
+                    if (timer >= TIME_LIMIT) {
+                        clearInterval(timerInterval);
+                        lockBoard = true; // Bloquea el tablero al perder
+                        showEndGameMessage(false);
+                    }
+                }, 1000);
+            }
+        }
+
+        // Función para verificar si el jugador ha ganado
+        function checkWin() {
+            if (matchedPairs === cardEmojis.length) {
+                clearInterval(timerInterval);
+                showEndGameMessage(true);
+            }
+        }
+
+        // Función para mostrar el modal de fin de juego
+        function showEndGameMessage(isWin) {
+            if (isWin) {
+                modalTitle.textContent = "¡Felicidades, has ganado!";
+                modalMessage.textContent = `Has completado el juego en ${timer}s y con ${tries} intentos.`;
+            } else {
+                modalTitle.textContent = "¡Tiempo agotado!";
+                modalMessage.textContent = `Has perdido. Inténtalo de nuevo para mejorar tu memoria.`;
+            }
+            endGameModal.classList.add('show');
+        }
+
+        // Función para reiniciar el juego por completo
+        function restartGame() {
+            tries = 0;
+            matchedPairs = 0;
+            timer = 0;
+            triesDisplay.textContent = tries;
+            timerDisplay.textContent = timer;
+            clearInterval(timerInterval);
+            timerInterval = null;
+            endGameModal.classList.remove('show');
+            lockBoard = false;
+            createBoard();
+            resetBoard();
+        }
+
+        // Event listeners
+        restartBtn.addEventListener('click', restartGame);
+        playAgainBtn.addEventListener('click', restartGame);
+
+        // Inicializar el juego al cargar la página
+        document.addEventListener('DOMContentLoaded', createBoard);
+    </script>
+</body>
+</html>
