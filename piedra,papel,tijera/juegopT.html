@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piedra, Papel, Tijera</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="juegop.css">
+</head>
+<body>
+    <div class="game-wrapper">
+        <header>
+            <h1>Piedra, Papel o Tijera</h1>
+        </header>
+
+        <main class="game-container"> 
+            <div class="score-board">
+                <div class="score-card">
+                    <p>Jugador</p>
+                    <span id="player-score">0</span>
+                </div>
+                <div class="score-card">
+                    <p>Computadora</p>
+                    <span id="computer-score">0</span>
+                </div>
+            </div>
+
+            <div class="result-area">
+                <p id="result-message" class="message">¡Elige tu movimiento!</p>
+                <div class="choices-display">
+                    <div class="choice-box">
+                        <i id="player-choice-icon" class="fas fa-hand-rock choice-icon invisible"></i>
+                        <p>Tú</p>
+                    </div>
+                    <div class="choice-box">
+                        <i id="computer-choice-icon" class="fas fa-hand-scissors choice-icon invisible"></i>
+                        <p>PC</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="choices">
+                <button id="rock" class="choice-button" data-choice="Piedra">
+                    <i class="fas fa-hand-rock"></i>
+                </button>
+                <button id="paper" class="choice-button" data-choice="Papel">
+                    <i class="fas fa-hand-paper"></i>
+                </button>
+                <button id="scissors" class="choice-button" data-choice="Tijera">
+                    <i class="fas fa-hand-scissors"></i>
+                </button>
+            </div>
+            
+            <button id="reset-button" class="reset-button invisible">Reiniciar Juego</button>
+        </main>
+    </div>
+
+    <script src="juego.js"></script>
+</body>
+</html>

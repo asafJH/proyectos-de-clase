@@ -1,0 +1,64 @@
+/* Fuente limpia y colores agradables */
+body {
+  background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  line-height: 1.8;
+}
+
+/* Encabezado atractivo */
+header {
+  background-color: #b71c1c;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+/* Secciones con cajas */
+main {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+section {
+  background: white;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+h2 {
+  color: #0d47a1;
+  margin-top: 0;
+}
+
+/* Enlaces estilizados */
+a {
+  color: #1565c0;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #b71c1c;
+  text-decoration: underline;
+}
+
+/* Footer */
+footer {
+  background: #212121;
+  color: #f1f1f1;
+  text-align: center;
+  padding: 15px;
+  margin-top: 30px;
+}

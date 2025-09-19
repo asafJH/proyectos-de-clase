@@ -1,0 +1,98 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: url('fondo.jpg') no-repeat center center/cover;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Caja principal */
+.box {
+  background: rgba(70, 70, 70, 0.6); /* gris semitransparente */
+  padding: 40px;
+  border-radius: 25px;
+  width: 350px;
+  color: white;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Cabecera */
+.top-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.top-header span {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.top-header header {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Campos de entrada */
+.input-field {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.input-field span {
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.input-field .input {
+  padding: 12px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+/* Botón */
+.submit {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.7);
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.submit:hover {
+  background: white;
+  transform: scale(1.05);
+}
+
+/* Parte inferior */
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.bottom .rigth a {
+  color: #ddd;
+  text-decoration: none;
+}
+
+.bottom .rigth a:hover {
+  text-decoration: underline;
+}

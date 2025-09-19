@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.card-container {
+    padding: 20px;
+}
+
+.card {
+    background-color: #e0e8d7;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 30px;
+    width: 300px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #6c63ff;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card-photo:hover {
+    transform: rotate(5deg) scale(1.1);
+}
+
+h2 {
+    color: #333333;
+    margin-top: 15px;
+}
+
+h3 {
+    color: #6c63ff;
+    margin-top: 5px;
+    font-weight: normal;
+}
+
+.description {
+    color: #666666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+button {
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #574bda;
+}
+
+.contact-hidden {
+    display: none;
+}
+
+.contact-info {
+    margin-top: 15px;
+    color: #333333;
+    font-size: 14px;
+    line-height: 1.5;
+}
